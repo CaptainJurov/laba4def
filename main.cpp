@@ -13,6 +13,8 @@ const std::map<std::string, double> ЦеныМасло = {
     {"Полусинт", 1600.0},
     {"Минерал", 3500.0}
 };
+
+
 struct Automobile {
     std::string Фамилия;
     std::string VIN;
@@ -22,9 +24,15 @@ struct Automobile {
     double Объем;
     double Остаток_Бензина;
     double Объем_Масла;
-    
-    
-    
+
+    Automobile(Automobile& machine): Фамилия(machine.Фамилия),
+    VIN(machine.VIN), Марка(machine.Марка),
+    Марка_топлива(machine.Марка_топлива),
+    Мощность(machine.Мощность), Объем(machine.Объем),
+    Остаток_Бензина(machine.Остаток_Бензина),
+    Объем_Масла(machine.Объем_Масла)
+    {}
+
     Automobile(
         std::string фамилия,
         std::string номер,
@@ -36,8 +44,7 @@ struct Automobile {
         double остаток_бензы = 0
     ): Фамилия(фамилия), VIN(номер), Марка(марка), Марка_топлива(марка_топлива),
         Мощность(мощность), Объем(обьем), Остаток_Бензина(остаток_бензы), Объем_Масла(обьем_масла) {}
-    
-    
+
     bool operator==(Automobile& right) {
         if (this->Фамилия!=right.Фамилия or this->VIN!=right.VIN or this->Марка!=right.Марка
         or this->Марка_топлива!=right.Марка_топлива or this->Мощность!=right.Мощность
@@ -53,12 +60,29 @@ struct Automobile {
 
 
 class DataBase {
-    private:
-        std::vector<Automobile> Автомобили;
-        
+private:
+    std::vector<Automobile> Автомобили;
+public:
+    void AppendMachine(Automobile& machine) {
+        Автомобили.push_back(Automobile(machine));
+    }
+    auto GetAutomobile() {
+        return Автомобили.start();
+    }
 };
 
+auto operator<<(std::ostream& left, DataBase& right) {
+    return right->GetAutomobile();
+}
+std::ostream operator>>(std::istream& left, DataBase& right) {
+    std::string фамилия, номер, марка, марка_топлива;
+    int мощность;
+    double обьем, обьем_масла, остаток_бензы;
+    left >> фамилия >> номер >> марка >> марка_топлива >> мощность >> обьем >> обьем_масла >> остаток_бензы;
+    right->AppendMachine(Automobile(фамилия, номер, марка, марка_топлива, мощность, обьем, обьем_масла, остаток_бензы));
+}
 
 int main() {
+
     return 0;
 }
