@@ -55,6 +55,7 @@ struct Automobile {
 class DataBase {
     private:
         std::vector<Automobile> Автомобили;
+        
 };
 
 
