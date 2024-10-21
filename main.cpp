@@ -25,7 +25,9 @@ struct Automobile {
     double Остаток_Бензина;
     double Объем_Масла;
 
-    Automobile(Automobile& machine): Фамилия(machine.Фамилия),
+    Automobile() {}
+
+    Automobile(const Automobile& machine): Фамилия(machine.Фамилия),
     VIN(machine.VIN), Марка(machine.Марка),
     Марка_топлива(machine.Марка_топлива),
     Мощность(machine.Мощность), Объем(machine.Объем),
@@ -56,6 +58,15 @@ struct Automobile {
             return true;
         }
     }
+    friend std::ostream& operator<<(std::ostream& os, const Automobile& Машина) {
+        os << "Фамилия: " << Машина.Фамилия << ", VIN: " << Машина.VIN << ", Марка: "<<Машина.Марка;
+        return os;
+    }
+
+    friend std::istream& operator>>(std::istream& is, Automobile& Машина) {
+        is >> Машина.Фамилия >> Машина.VIN >> Машина.Марка >> Машина.Марка_топлива >> Машина.Мощность >> Машина.Объем >> Машина.Остаток_Бензина >> Машина.Объем_Масла;
+        return is;
+    }
 };
 
 
@@ -63,24 +74,16 @@ class DataBase {
 private:
     std::vector<Automobile> Автомобили;
 public:
-    void AppendMachine(Automobile& machine) {
+    void AppendMachine(const Automobile& machine) {
         Автомобили.push_back(Automobile(machine));
     }
-    auto GetAutomobile() {
-        return Автомобили.begin();
+    friend std::istream& operator<<(std::istream& is, DataBase& db) {
+        Automobile machine;
+        is >> machine;
+        db.AppendMachine(machine);
+        return is;
     }
 };
-
-auto operator<<(std::ostream& left, DataBase& right) {
-    return right.GetAutomobile();
-}
-std::ostream operator>>(std::istream& left, DataBase& right) {
-    std::string фамилия, номер, марка, марка_топлива;
-    int мощность;
-    double обьем, обьем_масла, остаток_бензы;
-    left >> фамилия >> номер >> марка >> марка_топлива >> мощность >> обьем >> обьем_масла >> остаток_бензы;
-    right.AppendMachine(Automobile(фамилия, номер, марка, марка_топлива, мощность, обьем, обьем_масла, остаток_бензы));
-}
 
 int main() {
 
