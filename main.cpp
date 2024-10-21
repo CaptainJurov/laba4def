@@ -67,19 +67,19 @@ public:
         Автомобили.push_back(Automobile(machine));
     }
     auto GetAutomobile() {
-        return Автомобили.start();
+        return Автомобили.begin();
     }
 };
 
 auto operator<<(std::ostream& left, DataBase& right) {
-    return right->GetAutomobile();
+    return right.GetAutomobile();
 }
 std::ostream operator>>(std::istream& left, DataBase& right) {
     std::string фамилия, номер, марка, марка_топлива;
     int мощность;
     double обьем, обьем_масла, остаток_бензы;
     left >> фамилия >> номер >> марка >> марка_топлива >> мощность >> обьем >> обьем_масла >> остаток_бензы;
-    right->AppendMachine(Automobile(фамилия, номер, марка, марка_топлива, мощность, обьем, обьем_масла, остаток_бензы));
+    right.AppendMachine(Automobile(фамилия, номер, марка, марка_топлива, мощность, обьем, обьем_масла, остаток_бензы));
 }
 
 int main() {
