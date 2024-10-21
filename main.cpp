@@ -99,8 +99,14 @@ std::vector<Automobile> поискПоМаркеБинарный(std::string VIN
     std::sort(Автомобили.begin(), Автомобили.end(), [](Automobile& a, Automobile& b) {
         return a.VIN < b.VIN;
     });
-    auto it = lower_bound(Автомобили.begin(), Автомобили.end(), VIN, [](Car& car, std::string код) {
-        return car.VIN < код;
+
+
+
+//------------------===-=-==-=-
+
+
+    auto it = lower_bound(Автомобили.begin(), Автомобили.end(), VIN, [](Automobile& car, std::string код) {
+        return car.VIN == код;
     });
     while (it != Автомобили.end() && it->VIN == VIN) {
         найденные.push_back(*it);
