@@ -94,10 +94,10 @@ public:
     return найденные;
 }
 
-std::vector<Automobile> поискПоМаркеБинарный(std::vector VIN) {
+std::vector<Automobile> поискПоМаркеБинарный(std::string VIN) {
     std::vector<Automobile> найденные;
     std::sort(Автомобили.begin(), Автомобили.end(), [](Automobile& a, Automobile& b) {
-        return a.кодМарки < b.кодМарки;
+        return a.VIN < b.VIN;
     });
     auto it = lower_bound(Автомобили.begin(), Автомобили.end(), VIN, [](Car& car, std::string код) {
         return car.VIN < код;
