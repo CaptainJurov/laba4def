@@ -92,31 +92,33 @@ public:
         }
     }
     return найденные;
-}
+    }
 
-std::vector<Automobile> поискПоМаркеБинарный(std::string VIN) {
-    std::vector<Automobile> найденные;
-    std::sort(Автомобили.begin(), Автомобили.end(), [](Automobile& a, Automobile& b) {
-        return a.VIN < b.VIN;
-    });
+    std::vector<Automobile> поискПоМаркеБинарный(std::string VIN) {
+        std::vector<Automobile> найденные;
+        std::sort(Автомобили.begin(), Автомобили.end(), [](Automobile& a, Automobile& b) {
+            return a.VIN < b.VIN;
+        });
 
 
 
 //------------------===-=-==-=-
+        
 
-
-    auto it = lower_bound(Автомобили.begin(), Автомобили.end(), VIN, [](Automobile& car, std::string код) {
-        return car.VIN == код;
-    });
-    while (it != Автомобили.end() && it->VIN == VIN) {
-        найденные.push_back(*it);
-        ++it;
-    }
-    return найденные;
+        auto it = lower_bound(Автомобили.begin(), Автомобили.end(), VIN, [](Automobile& car, std::string код) {
+            return car.VIN == код;
+        });
+        while (it != Автомобили.end() && it->VIN == VIN) {
+            найденные.push_back(*it);
+            ++it;
+        }
+        return найденные;
 }
 };
 
 int main() {
-
+    DataBase *db = new DataBase();
+    db->AppendMachine(Automobile());
+    std::cout<<db->поискПоМаркеБинарный("SVO");
     return 0;
 }
