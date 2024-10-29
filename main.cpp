@@ -119,6 +119,6 @@ public:
 int main() {
     DataBase *db = new DataBase();
     db->AppendMachine(Automobile());
-    std::cout<<db->поискПоМаркеБинарный("SVO");
+    std::cout << db->поискПоМаркеБинарный("SFO");
     return 0;
 }
