@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <list>
 #include <string>
 #include <map>
 #include <algorithm>
@@ -59,7 +58,8 @@ struct Automobile {
             return true;
         }
     }
-    friend std::ostream& operator<<(std::ostream& os, const Automobile& Машина) {
+    friend std::ostream& operator<<(std::ostream& os, Automobile& Машина) {
+        std::cout<<Машина.Фамилия;
         os << "Фамилия: " << Машина.Фамилия << ", VIN: " << Машина.VIN << ", Марка: "<<Машина.Марка;
         return os;
     }
@@ -67,6 +67,13 @@ struct Automobile {
     friend std::istream& operator>>(std::istream& is, Automobile& Машина) {
         is >> Машина.Фамилия >> Машина.VIN >> Машина.Марка >> Машина.Марка_топлива >> Машина.Мощность >> Машина.Объем >> Машина.Остаток_Бензина >> Машина.Объем_Масла;
         return is;
+    }
+    
+    friend bool operator<(const Automobile& left, const Automobile& right) {
+        if (left.Мощность<right.Мощность) {
+            return true;
+        }
+        else {return false;}
     }
 };
 
@@ -86,39 +93,35 @@ public:
     }
     std::vector<Automobile> поискПоМаркеЛинейный(std::string VIN) {
     std::vector<Automobile> найденные;
-    for (Automobile& car : Автомобили) {
-        if (car.VIN == VIN) {
-            найденные.push_back(car);
-        }
+    for (auto car = Автомобили.begin(); car != Автомобили.end(); car++) {
+        auto i = std::find_if(car, Автомобили.end(), [VIN](Automobile& left) {return left.VIN==VIN;});
+        найденные.push_back(*i);
+        // next(car);
     }
     return найденные;
     }
 
-    std::vector<Automobile> поискПоМаркеБинарный(std::string VIN) {
-        std::vector<Automobile> найденные;
+    bool поискПоМаркеБинарный(Automobile& machine) {
         std::sort(Автомобили.begin(), Автомобили.end(), [](Automobile& a, Automobile& b) {
             return a.VIN < b.VIN;
         });
-
-
-
-//------------------===-=-==-=-
-        
-
-        auto it = lower_bound(Автомобили.begin(), Автомобили.end(), VIN, [](Automobile& car, std::string код) {
-            return car.VIN == код;
-        });
-        while (it != Автомобили.end() && it->VIN == VIN) {
-            найденные.push_back(*it);
-            ++it;
-        }
-        return найденные;
+        return std::binary_search(Автомобили.begin(), Автомобили.end(), machine);
 }
 };
 
 int main() {
     DataBase *db = new DataBase();
-    db->AppendMachine(Automobile());
-    std::cout << db->поискПоМаркеБинарный("SFO");
+    db->AppendMachine(Automobile("Zalupenko", "Z1488OV", "Lada", "АИ-95", 100, 30, 1, 0));
+    db->AppendMachine(Automobile("Shaurbekov", "Z1488OV", "Matiz", "АИ-95", 50, 30, 1, 0));
+    db->AppendMachine(Automobile("Bekbekov", "Z1477OV", "Matiz", "АИ-95", 50, 30, 1, 0));
+    auto machine = Automobile("Ohlobusting", "R787US", "Лада", "АИ-95", 100, 30, 1, 0);
+    if (db->поискПоМаркеБинарный(machine)) {
+        std::cout<<"FIND\n";
+    };
+    auto baze = db->поискПоМаркеЛинейный("Z1488OV");
+    for (auto i:baze) {
+        std::cout<<i.Фамилия<<"\n";
+    }
+    std::cout<<"Gotovo\n";
     return 0;
 }
