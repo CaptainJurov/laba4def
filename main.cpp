@@ -117,17 +117,15 @@ public:
 
 int main() {
     DataBase *db = new DataBase();
-    db->AppendMachine(Automobile("Zalupenko", "Z1488OV", "Lada", "АИ-95", 100, 30, 1, 0));
-    db->AppendMachine(Automobile("Shaurbekov", "Z1488OV", "Matiz", "АИ-95", 50, 30, 1, 0));
-    db->AppendMachine(Automobile("Bekbekov", "Z1477OV", "Matiz", "АИ-95", 50, 30, 1, 0));
+    db->AppendMachine(Automobile("Zalupenko", "ВO04КО", "Lada", "АИ-92", 100, 30, 1, 0));
+    db->AppendMachine(Automobile("Shaurbekov", "В777ОР", "Matiz", "АИ-95", 50, 30, 1, 0));
+    db->AppendMachine(Automobile("Bekbekov", "Х069ЕР", "Matiz", "АИ-95", 50, 30, 1, 0));
+    std::cout<<"Фам|Ном|Мар|Топ|Двиг|Обьем|Ост|Масл"<<"\n";
     
-    
-    auto machine = Automobile("Ohlobusting", "R787US", "Лада", "АИ-95", 100, 30, 1, 0);
+    auto machine = Automobile("Ohlobusting", "R787US", "Лада", "АИ-92", 99, 29, 0, 0);
     if (db->поискБинарный(machine)) {
         std::cout<<"FIND\n";
     };
-    
-    auto baze = db->поискЛинейный("Z1488OV");
     
     std::copy(
         std::istream_iterator<Automobile>(std::cin),
@@ -143,5 +141,13 @@ int main() {
     
     
     std::cout<<"Gotovo\n";
+
+    auto baze = db->поискЛинейный("АИ-95");
+    std::copy(
+        baze.begin(),
+        baze.end(),
+        std::ostream_iterator<Automobile>(std::cout, "\n")
+    );
+
     return 0;
 }
