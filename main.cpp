@@ -129,6 +129,11 @@ int main() {
     
     auto baze = db->поискЛинейный("Z1488OV");
     
+    std::copy(
+        std::istream_iterator<Automobile>(std::cin),
+        std::istream_iterator<Automobile> (),
+        std::back_inserter(db->Автомобили)
+    );
     
     std::copy(
      db->Автомобили.begin(), 
