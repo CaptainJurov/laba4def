@@ -1,4 +1,6 @@
 #include <iostream>
+#include <iterator>
+#include <ostream>
 #include <vector>
 #include <string>
 #include <map>
@@ -58,8 +60,7 @@ struct Automobile {
             return true;
         }
     }
-    friend std::ostream& operator<<(std::ostream& os, Automobile& Машина) {
-        std::cout<<Машина.Фамилия;
+    friend std::ostream& operator<<(std::ostream& os, const Automobile& Машина) {
         os << "Фамилия: " << Машина.Фамилия << ", VIN: " << Машина.VIN << ", Марка: "<<Машина.Марка;
         return os;
     }
@@ -79,9 +80,8 @@ struct Automobile {
 
 
 class DataBase {
-private:
-    std::vector<Automobile> Автомобили;
 public:
+    std::vector<Automobile> Автомобили;
     void AppendMachine(const Automobile& machine) {
         Автомобили.push_back(Automobile(machine));
     }
@@ -119,9 +119,7 @@ int main() {
         std::cout<<"FIND\n";
     };
     auto baze = db->поискПоМаркеЛинейный("Z1488OV");
-    for (auto i:baze) {
-        std::cout<<i.Фамилия<<"\n";
-    }
+    std::copy(db->Автомобили.begin(), db->Автомобили.end(), std::ostream_iterator<Automobile>(std::cout, "\n"));
     std::cout<<"Gotovo\n";
     return 0;
 }
