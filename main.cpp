@@ -103,16 +103,16 @@ public:
             if (*car==param) {
                 найденные.push_back(Automobile(*car));
             }
-    }
+        }
     return найденные;
     }
 
-    bool поискПоМаркеБинарный(Automobile& machine) {
+    bool поискБинарный(Automobile& machine) {
         std::sort(Автомобили.begin(), Автомобили.end(), [](Automobile& a, Automobile& b) {
             return a.VIN < b.VIN;
         });
         return std::binary_search(Автомобили.begin(), Автомобили.end(), machine);
-}
+    }
 };
 
 int main() {
@@ -123,7 +123,7 @@ int main() {
     
     
     auto machine = Automobile("Ohlobusting", "R787US", "Лада", "АИ-95", 100, 30, 1, 0);
-    if (db->поискПоМаркеБинарный(machine)) {
+    if (db->поискБинарный(machine)) {
         std::cout<<"FIND\n";
     };
     
