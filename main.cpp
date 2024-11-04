@@ -115,6 +115,14 @@ public:
     }
 };
 
+void Вывод(const std::vector<Automobile>& век) {
+    std::copy(
+        век.begin(),
+        век.end(),
+        std::ostream_iterator<Automobile>(std::cout, "\n")
+    );
+}
+
 int main() {
     DataBase *db = new DataBase();
     db->AppendMachine(Automobile("Zalupenko", "ВO04КО", "Lada", "АИ-92", 100, 30, 1, 0));
@@ -133,21 +141,11 @@ int main() {
         std::back_inserter(db->Автомобили)
     );
     
-    std::copy(
-     db->Автомобили.begin(), 
-     db->Автомобили.end(),
-     std::ostream_iterator<Automobile>(std::cout, "\n")
-    );
-    
+    Вывод(db->Автомобили);
     
     std::cout<<"Gotovo\n";
 
     auto baze = db->поискЛинейный("АИ-95");
-    std::copy(
-        baze.begin(),
-        baze.end(),
-        std::ostream_iterator<Automobile>(std::cout, "\n")
-    );
-
+    Вывод(baze);
     return 0;
 }
