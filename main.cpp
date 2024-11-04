@@ -16,7 +16,6 @@ const std::map<std::string, double> ЦеныМасло = {
     {"Минерал", 3500.0}
 };
 
-
 struct Automobile {
     std::string Фамилия;
     std::string VIN;
@@ -60,6 +59,11 @@ struct Automobile {
             return true;
         }
     }
+
+    bool operator==(const int& right) {return right==Мощность;}
+    bool operator==(const std::string& right) {return right==Фамилия or right==VIN or right==Марка or right==Марка_топлива;}
+    bool operator==(const double& right) {return right==Объем or right==Остаток_Бензина or right==Объем_Масла;}
+    
     friend std::ostream& operator<<(std::ostream& os, const Automobile& Машина) {
         os << "Фамилия: " << Машина.Фамилия << ", VIN: " << Машина.VIN << ", Марка: "<<Машина.Марка;
         return os;
@@ -91,12 +95,14 @@ public:
         db.AppendMachine(machine);
         return is;
     }
-    std::vector<Automobile> поискПоМаркеЛинейный(std::string VIN) {
-    std::vector<Automobile> найденные;
-    for (auto car = Автомобили.begin(); car != Автомобили.end(); car++) {
-        auto i = std::find_if(car, Автомобили.end(), [VIN](Automobile& left) {return left.VIN==VIN;});
-        найденные.push_back(*i);
-        // next(car);
+
+    template<typename T>
+    std::vector<Automobile> поискЛинейный(const T& param) {
+        std::vector<Automobile> найденные;
+        for (auto car = Автомобили.begin(); car != Автомобили.end(); car++) {
+            if (*car==param) {
+                найденные.push_back(Automobile(*car));
+            }
     }
     return найденные;
     }
@@ -114,12 +120,23 @@ int main() {
     db->AppendMachine(Automobile("Zalupenko", "Z1488OV", "Lada", "АИ-95", 100, 30, 1, 0));
     db->AppendMachine(Automobile("Shaurbekov", "Z1488OV", "Matiz", "АИ-95", 50, 30, 1, 0));
     db->AppendMachine(Automobile("Bekbekov", "Z1477OV", "Matiz", "АИ-95", 50, 30, 1, 0));
+    
+    
     auto machine = Automobile("Ohlobusting", "R787US", "Лада", "АИ-95", 100, 30, 1, 0);
     if (db->поискПоМаркеБинарный(machine)) {
         std::cout<<"FIND\n";
     };
-    auto baze = db->поискПоМаркеЛинейный("Z1488OV");
-    std::copy(db->Автомобили.begin(), db->Автомобили.end(), std::ostream_iterator<Automobile>(std::cout, "\n"));
+    
+    auto baze = db->поискЛинейный("Z1488OV");
+    
+    
+    std::copy(
+     db->Автомобили.begin(), 
+     db->Автомобили.end(),
+     std::ostream_iterator<Automobile>(std::cout, "\n")
+    );
+    
+    
     std::cout<<"Gotovo\n";
     return 0;
 }
