@@ -65,7 +65,7 @@ struct Automobile {
     bool operator==(const double& right) {return right==Объем or right==Остаток_Бензина or right==Объем_Масла;}
     
     friend std::ostream& operator<<(std::ostream& os, const Automobile& Машина) {
-        os << "Фамилия: " << Машина.Фамилия << ", VIN: " << Машина.VIN << ", Марка: "<<Машина.Марка;
+        os << "Фамилия: " << Машина.Фамилия << ", VIN: " << Машина.VIN << ", Марка: "<<Машина.Марка<<" , Бензин: "<<Машина.Марка_топлива;
         return os;
     }
 
@@ -99,10 +99,14 @@ public:
     template<typename T>
     std::vector<Automobile> поискЛинейный(const T& param) {
         std::vector<Automobile> найденные;
-        for (auto car = Автомобили.begin(); car != Автомобили.end(); car++) {
-            if (*car==param) {
-                найденные.push_back(Automobile(*car));
-            }
+        auto it_first = Автомобили.begin();
+        auto it_second = Автомобили.end();
+        
+        while (true) {
+            auto it_buf = std::find_if(it_first, it_second, [param](Automobile& left){return left==param;});
+            if (it_buf != it_second) {найденные.push_back(Automobile(*it_buf));}
+            else break;
+            it_first = it_buf+1;
         }
     return найденные;
     }
